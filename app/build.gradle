@@ -1,0 +1,71 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion build_versions.target_sdk
+    buildToolsVersion build_versions.build_tools
+    defaultConfig {
+        minSdkVersion build_versions.min_sdk
+        targetSdkVersion build_versions.target_sdk
+        applicationId "com.example.fastlanex"
+        versionCode 8000
+        versionName "8.0.0.0"
+        multiDexEnabled true
+    }
+
+    buildTypes {
+        debug {
+            applicationIdSuffix ""
+        }
+
+        release {
+            applicationIdSuffix ""
+            minifyEnabled false //TODO: true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    //Java 8 feature support
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
+//noinspection SpellCheckingInspection
+dependencies {
+//    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    //===========Android dependencies:
+    implementation deps.kotlin.stdlib
+    implementation deps.android_support.appcompatv7
+    implementation deps.android_support.design
+    implementation deps.android_support.vector_drawable
+    implementation deps.constraint_layout
+
+    //Needed because we still support < API 20:
+    implementation deps.android_support.multidex
+
+    //===========KOtlin dependency INjection (KOIN):
+    implementation deps.koin.viewmodel
+
+    //===========Room database:
+    implementation deps.room.runtime
+    kapt deps.room.compiler
+    testImplementation deps.room.testing
+}
+
+apply from: 'integrationtesting.gradle'
+
+apply from: 'screenshots.gradle'
+
+apply from: 'coverage.gradle'

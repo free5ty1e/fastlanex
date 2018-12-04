@@ -1,0 +1,153 @@
+android {
+    defaultConfig {
+        buildConfigField "String", "SCREENSHOT_FOLDER", "\"${SCREENSHOT_FOLDER_NAME}\""
+    }
+    testOptions {
+        animationsDisabled true
+    }
+}
+
+def connectedTestReportsBaseDirectory = "$buildDir/reports/androidTests/connected"
+
+project.afterEvaluate {
+    // Grab all build types and product flavors
+    def productFlavors = android.productFlavors.collect { flavor ->
+        flavor.name
+    }
+    // When no product flavors defined, use empty
+    if (!productFlavors) productFlavors.add('')
+
+    def generatedTasks = []
+    //iterate over the flavors
+
+    productFlavors.each {
+
+        productFlavorName ->
+            def productFlavorCapitalized = productFlavorName.capitalize()
+            def productFlavorEmbedScreenshotsTaskName = "embed${productFlavorCapitalized}DebugConnectedTestScreenshots"
+            def productFlavorConnectedTestName = "connected${productFlavorCapitalized}DebugAndroidTest"
+            def fetchScreenshotsTask = "fetch${productFlavorCapitalized}DebugConnectedTestScreenshots"
+            def reportFlavorSubfolder = productFlavorName.length() > 0 ? "/flavors/${productFlavorName.toUpperCase()}" : ''
+            def flavorScreenshotBaseFolder = connectedTestReportsBaseDirectory + reportFlavorSubfolder
+            def clearScreenshotsTaskName = "clear${productFlavorCapitalized}DebugConnectedTestScreenshots"
+            def createScreenshotDirectoryTaskName = "create${productFlavorCapitalized}DebugScreenshotDir"
+
+            def clearScreenshotsTask = task(clearScreenshotsTaskName, type: Exec, group: 'reporting') {
+                executable "${android.getAdbExe().toString()}"
+                args 'shell', 'rm', '-r', '/sdcard/Pictures/' + SCREENSHOT_FOLDER_NAME
+                finalizedBy {
+                    productFlavorEmbedScreenshotsTaskName
+                }
+            }
+
+            def createScreenshotDirectoryTask = task(createScreenshotDirectoryTaskName, type: Exec, group: 'reporting') {
+                executable "${android.getAdbExe().toString()}"
+                args 'shell', 'mkdir', '-p', '/sdcard/Pictures/' + SCREENSHOT_FOLDER_NAME
+            }
+
+            task(fetchScreenshotsTask, type: Exec, group: 'reporting') {
+                executable "${android.getAdbExe().toString()}"
+                args 'pull', '/sdcard/Pictures/' + SCREENSHOT_FOLDER_NAME + '/.', flavorScreenshotBaseFolder
+                finalizedBy {
+                    clearScreenshotsTask
+                }
+
+/*
+                dependsOn {
+                    createScreenshotDirectoryTask
+                }
+*/
+
+                doFirst {
+                    new File(flavorScreenshotBaseFolder).mkdirs()
+                }
+            }
+
+
+            task "${productFlavorEmbedScreenshotsTaskName}" (dependsOn: fetchScreenshotsTask, group: 'reporting') {
+                description = "Perform screenshot embed task on the ${productFlavorCapitalized} build."
+                doFirst {
+                    processScreenshots(flavorScreenshotBaseFolder, "failures", '<h3 class=\"failures\">', '</h3>')
+                    processScreenshots(flavorScreenshotBaseFolder, "successes", '<td>', '</td>', true)
+                }
+            }
+
+            def productFlavorConnectedTestTask = tasks.getByName(productFlavorConnectedTestName)
+            productFlavorConnectedTestTask.finalizedBy productFlavorEmbedScreenshotsTaskName
+            productFlavorConnectedTestTask.dependsOn createScreenshotDirectoryTask
+
+    }
+
+    //Generate one task to run them all (screenshot reporting tasks) for convenience
+    task embedAllScreenshots(type: GradleBuild, group: 'reporting') {
+        description = "Perform all screenshot embed tasks."
+        tasks = generatedTasks
+    }
+}
+
+/*
+def embedScreenshotsTask = task('embedScreenshots', group: 'reporting') {
+    doFirst {
+//        processScreenshotFails(reportsDirectory)
+        processScreenshots(connectedTestReportsBaseDirectory, "failures", '<h3 class=\"failures\">', '</h3>')
+        processScreenshots(connectedTestReportsBaseDirectory, "successes", '<td>', '</td>', true)
+    }
+}
+*/
+
+def processScreenshots(reportsDirectory, String screenshotSubfolderName, String htmlPatternPrefix, String htmlPatternSuffix, boolean insertScreenshotBeforeSuffix = false) {
+    def successScreenshotsDirectory = new File(reportsDirectory, 'screenshots/' + screenshotSubfolderName)
+
+    if (!successScreenshotsDirectory.exists()) {
+        println "Could not find ${screenshotSubfolderName} screenshots. Skipping..."
+        return
+    }
+
+    successScreenshotsDirectory.eachFile { successTestClassDirectory ->
+        def successTestClassName = successTestClassDirectory.name
+
+        successTestClassDirectory.eachFile { successTestFile ->
+            def successTestName = successTestFile.name
+            def successTestNameWithoutExtension = successTestName.take(successTestName.lastIndexOf('.'))
+            def successTestClassJunitReportFile = new File(reportsDirectory, "${successTestClassName}.html")
+
+            if (!successTestClassJunitReportFile.exists()) {
+                println "Could not find JUnit report file for test class '${successTestClassJunitReportFile}'"
+                return
+            }
+
+            def successTestJunitReportContent = successTestClassJunitReportFile.text
+
+
+            def patternToFindWithoutSuffix = "${htmlPatternPrefix}${successTestNameWithoutExtension}"
+            def patternToFind = "${patternToFindWithoutSuffix}${htmlPatternSuffix}"
+            def patternToReplace = "${patternToFind} <img src=\"screenshots/" + screenshotSubfolderName + "/${successTestClassName}/${successTestName}\" width =\"360\" />"
+
+            //Align the right test result column showing success and run time to top as well for better looking reports:
+            successTestJunitReportContent = successTestJunitReportContent.replaceAll('<td class="success">', '<td class="success" valign="top">')
+
+            if (insertScreenshotBeforeSuffix) {
+
+                //Insert a border around the Tests table:
+                successTestJunitReportContent = successTestJunitReportContent.replaceAll(
+                        '<table>\n' +
+                                '<thead>\n' +
+                                '<tr>\n' +
+                                '<th>Test</th>',
+                        '<table border="1" style="border-bottom-style: solid; border-bottom: thick #000000;">\n' +
+                                '<thead>\n' +
+                                '<tr>\n' +
+                                '<th>Test</th>')
+
+                //Also add valign="top" tag to prefix html tag for this case:
+//                def htmlPrefixTagAlignedPatternToFind = patternToFindWithoutSuffix.replace('>', ' valign=top>')
+                def patternToReplaceBeforeSuffix = "${patternToFindWithoutSuffix}<br><img src=\"screenshots/" + screenshotSubfolderName + "/${successTestClassName}/${successTestName}\" width =\"360\" />${htmlPatternSuffix}"
+                successTestJunitReportContent = successTestJunitReportContent.replaceAll(patternToFind, patternToReplaceBeforeSuffix)
+            } else {
+                successTestJunitReportContent = successTestJunitReportContent.replaceAll(patternToFind, patternToReplace)
+            }
+
+            successTestClassJunitReportFile.write(successTestJunitReportContent)
+        }
+    }
+}

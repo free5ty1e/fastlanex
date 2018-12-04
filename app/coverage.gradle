@@ -1,0 +1,99 @@
+apply plugin: 'jacoco'
+
+android{
+    buildTypes {
+        debug {
+            testCoverageEnabled true
+        }
+    }
+}
+
+jacoco {
+    toolVersion = '0.8.2'
+}
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
+}
+project.afterEvaluate {
+    // Grab all build types and product flavors
+    def buildTypes = android.buildTypes.collect { type ->
+        type.name
+    }
+    def productFlavors = android.productFlavors.collect { flavor ->
+        flavor.name
+    }
+    // When no product flavors defined, use empty
+    if (!productFlavors) productFlavors.add('')
+
+    def coverageTasks = []
+    //iterate over the flavors
+
+    productFlavors.each {
+
+        productFlavorName ->
+            def integrationTestCoverageTaskName = "create${productFlavorName.capitalize()}DebugCoverageReport"
+//iterate over build types like debug,release,prod etc.
+            buildTypes.each {
+
+                buildTypeName ->
+                    //sourceName — e.g. freeDebug ,sourcePath — e.g. free/debug
+                    def sourceName, sourcePath
+                    if (!productFlavorName) {
+                        sourceName = sourcePath = "${buildTypeName}"
+                    } else {
+                        sourceName = "${productFlavorName}${buildTypeName.capitalize()}"
+                        sourcePath = "${productFlavorName}/${buildTypeName}"
+                    }
+                    def testTaskName = "test${sourceName.capitalize()}UnitTest"
+                    // Create coverage task of form 'testFlavorTypeCoverage' depending on 'testFlavorTypeUnitTest'
+                    def unitTestCoverageTaskName = "${testTaskName}Coverage"
+                    task "${testTaskName}Coverage"(type: JacocoReport, dependsOn: "$testTaskName") {
+                        group = "Reporting"
+                        description = "Generate Jacoco coverage reports on the ${sourceName.capitalize()} build."
+                        def fileFilter = [
+                                '**/R.class',
+                                '**/R$*.class',
+                                '**/*$ViewInjector*.*',
+                                '**/*$ViewBinder*.*',
+                                '**/BuildConfig.*',
+                                '**/Manifest*.*',
+                                '**/*Test*.*',
+                                'android/**/*.*'
+                        ]
+                        def javaClasses = fileTree(
+                                dir: "$project.buildDir/intermediates/classes/${sourcePath}",
+                                excludes: fileFilter
+                        )
+                        def kotlinClasses = fileTree(
+                                dir: "$project.buildDir/tmp/kotlin-classes/${sourcePath}",
+                                excludes: fileFilter
+                        )
+                        classDirectories = files([javaClasses], [kotlinClasses])
+                        def coverageSourceDirs = [
+                                "src/main/java",
+                                "src/$productFlavorName/java",
+                                "src/$buildTypeName/java"
+                        ]
+                        additionalSourceDirs = files(coverageSourceDirs)
+                        sourceDirectories = files(coverageSourceDirs)
+                        executionData = fileTree(dir: "$project.buildDir", includes: [
+                                "jacoco/${testTaskName}.exec",
+                                "outputs/code-coverage/flavors/${productFlavorName.toUpperCase()}/*.ec" //Check this path or update to relevant path
+                        ])
+                        reports {
+                            //enables and disable the type of file you need
+                            xml.enabled = true
+                            html.enabled = true
+                        }
+                    }
+                    coverageTasks.add(unitTestCoverageTaskName.toString())
+            }
+            coverageTasks.add(integrationTestCoverageTaskName.toString())
+    }
+    //Generate one task to run them all (coverage reporting tasks) for convenience
+    task jacocoCoverage(type: GradleBuild) {
+        group = "Reporting"
+        description = "Generate All Jacoco coverage reports on the all build flavors."
+        tasks = coverageTasks
+    }
+}
