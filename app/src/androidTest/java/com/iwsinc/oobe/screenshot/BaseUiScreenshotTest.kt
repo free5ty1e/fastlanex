@@ -69,7 +69,7 @@ abstract class BaseUiScreenshotTest<T : Activity>(private val clazz: Class<T>) {
         var screenshotTakingRule: ScreenshotTakingRule<T>? = ScreenshotTakingRule(scenario)
     */
 
-    @get:ClassRule val localeTestRule = LocaleTestRule()
+//    @get:ClassRule val localeTestRule = LocaleTestRule()
 
     @JvmField
     @Rule
