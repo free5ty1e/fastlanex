@@ -61,7 +61,7 @@ class NavigationActivityTest : BaseUiScreenshotTest<NavigationActivity>(Navigati
     @Test
     @SmallTest
     fun mainActivityTest() {
-        screenshot("start mainActivityTest")
+//        screenshot("start mainActivityTest")
         checkHomeScreen()
 
         clickTabHome()
