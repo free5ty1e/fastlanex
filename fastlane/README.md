@@ -21,6 +21,11 @@ or alternatively using `brew cask install fastlane`
 fastlane android buildtest
 ```
 Build required apk and test apk for screengrab command
+### android grabprep
+```
+fastlane android grabprep
+```
+Build required apk and test apk for screengrab command
 ### android alltests
 ```
 fastlane android alltests

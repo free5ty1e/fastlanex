@@ -28,7 +28,15 @@ platform :android do
       print_command: true,
       flags: "-Dorg.gradle.internal.http.socketTimeout=60000 -Dorg.gradle.internal.http.connectionTimeout=60000"
     )
+  end
 
+  desc "Build required apk and test apk for screengrab command"
+  lane :grabprep do
+    gradle(
+      task: "assembleDebug assembleDebugAndroidTest",
+      print_command: true,
+      flags: "-Dorg.gradle.internal.http.socketTimeout=60000 -Dorg.gradle.internal.http.connectionTimeout=60000"
+    )
   end
 
   desc "Runs all the tests with coverage"

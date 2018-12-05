@@ -1,5 +1,4 @@
-package com.example.fastlanex.view;
-
+package com.example.fastlanex.view.fastlane;
 
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -9,15 +8,11 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 import tools.fastlane.screengrab.Screengrab;
 import tools.fastlane.screengrab.UiAutomatorScreenshotStrategy;
 import tools.fastlane.screengrab.locale.LocaleTestRule;
 
-//import android.support.test.rule.ActivityTestRule;
-
-@RunWith(JUnit4.class)
-//@RunWith(AndroidJUnit4.class)
+@RunWith(AndroidJUnit4.class)
 public class NavigationActivityJavaFastlaneTest {
 
     @ClassRule

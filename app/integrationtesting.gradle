@@ -7,17 +7,12 @@ android {
         testInstrumentationRunnerArguments clearPackageData: 'true'
     }
     // Gradle automatically adds 'android.test.runner' as a dependency.
+/*
     useLibrary 'android.test.runner'
     useLibrary 'android.test.base'
     useLibrary 'android.test.mock'
-
-/*
-    buildTypes {
-        debug {
-            testCoverageEnabled true
-        }
-    }
 */
+
     //Java 8 feature support
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -44,7 +39,6 @@ android {
 }
 dependencies {
 
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
 
 //    androidTestImplementation deps.testing.androidx_core
 
@@ -70,12 +64,14 @@ dependencies {
     androidTestImplementation deps.testing.fastlane
 
     //============Unit test partial instrumentation with Robolectric and AndroidX Jetpack / Espresso:
+/*
     testImplementation(deps.testing.androidx_runner)
     testImplementation(deps.testing.androidx_junit)
     testImplementation(deps.testing.espresso_intents)
     testImplementation(deps.testing.espresso_core)
     testImplementation(deps.testing.androidx_truth)
     testImplementation (deps.testing.robolectric)
+*/
 }
 
 
