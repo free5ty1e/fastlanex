@@ -29,7 +29,6 @@ platform :android do
   lane :alltests do
 #    gradle(task: "jacocoCoverage",
     gradle(task: "cAT",
-
       print_command: true,
       flags: "-Pandroid.testInstrumentationRunnerArguments.size=small -PandroidTestRunner=androidx.test.runner.AndroidJUnitRunner --continue --full-stacktrace -Dorg.gradle.internal.http.socketTimeout=60000 -Dorg.gradle.internal.http.connectionTimeout=60000"
     )
@@ -37,7 +36,7 @@ platform :android do
 
   desc "Runs Small QA flavor tests with coverage"
   lane :smalltests do
-    gradle(task: "createDebugCoverageReport",
+    gradle(task: "test createDebugCoverageReport",
       print_command: true,
       flags: "-Pandroid.testInstrumentationRunnerArguments.size=small -PandroidTestRunner=androidx.test.runner.AndroidJUnitRunner --continue --full-stacktrace -Dorg.gradle.internal.http.socketTimeout=60000 -Dorg.gradle.internal.http.connectionTimeout=60000"
     )

@@ -47,7 +47,7 @@ project.afterEvaluate {
                     def testTaskName = "test${sourceName.capitalize()}UnitTest"
                     // Create coverage task of form 'testFlavorTypeCoverage' depending on 'testFlavorTypeUnitTest'
                     def unitTestCoverageTaskName = "${testTaskName}Coverage"
-                    task "${testTaskName}Coverage"(type: JacocoReport, dependsOn: "$testTaskName") {
+                    task "${unitTestCoverageTaskName}"(type: JacocoReport, dependsOn: "$testTaskName") {
                         group = "Reporting"
                         description = "Generate Jacoco coverage reports on the ${sourceName.capitalize()} build."
                         def fileFilter = [
@@ -86,14 +86,17 @@ project.afterEvaluate {
                             html.enabled = true
                         }
                     }
+                    getTasks().getByName(testTaskName).finalizedBy(unitTestCoverageTaskName)
                     coverageTasks.add(unitTestCoverageTaskName.toString())
             }
             coverageTasks.add(integrationTestCoverageTaskName.toString())
     }
     //Generate one task to run them all (coverage reporting tasks) for convenience
+/*
     task jacocoCoverage(type: GradleBuild) {
         group = "Reporting"
         description = "Generate All Jacoco coverage reports on the all build flavors."
         tasks = coverageTasks
     }
+*/
 }
