@@ -13,5 +13,6 @@ locales(['en-US'])
 clear_previous_screenshots(true)
 
 test_instrumentation_runner 'com.example.fastlanex.testutils.FastlaneTestRunner'
+#test_instrumentation_runner 'android.support.test.runner.AndroidJUnitRunner'
 
 exit_on_test_failure(false)

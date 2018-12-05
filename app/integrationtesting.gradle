@@ -1,7 +1,9 @@
 android {
     defaultConfig {
-        //        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+//                testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         testInstrumentationRunner "com.example.fastlanex.testutils.FastlaneTestRunner"
+//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
         testInstrumentationRunnerArguments clearPackageData: 'true'
     }
     // Gradle automatically adds 'android.test.runner' as a dependency.
@@ -42,25 +44,27 @@ android {
 }
 dependencies {
 
-    androidTestImplementation deps.testing.androidx_core
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+
+//    androidTestImplementation deps.testing.androidx_core
 
     // AndroidJUnitRunner and JUnit Rules
-    androidTestImplementation deps.testing.androidx_runner
-    androidTestImplementation deps.testing.androidx_rules
+//    androidTestImplementation deps.testing.androidx_runner
+//    androidTestImplementation deps.testing.androidx_rules
 
     // Assertions
-    androidTestImplementation deps.testing.androidx_junit
-    androidTestImplementation deps.testing.androidx_truth
-    androidTestImplementation deps.testing.google_truth
+//    androidTestImplementation deps.testing.androidx_junit
+//    androidTestImplementation deps.testing.androidx_truth
+//    androidTestImplementation deps.testing.google_truth
 
     // Espresso dependencies
-    androidTestImplementation deps.testing.espresso_core
-    androidTestImplementation deps.testing.espresso_contrib
-    androidTestImplementation deps.testing.espresso_intents
-    androidTestImplementation deps.testing.espresso_accessibility
-    androidTestImplementation deps.testing.espresso_web
-    androidTestImplementation deps.testing.espresso_idling_concurrent
-    androidTestImplementation deps.testing.espresso_idling_resource
+//    androidTestImplementation deps.testing.espresso_core
+//    androidTestImplementation deps.testing.espresso_contrib
+//    androidTestImplementation deps.testing.espresso_intents
+//    androidTestImplementation deps.testing.espresso_accessibility
+//    androidTestImplementation deps.testing.espresso_web
+//    androidTestImplementation deps.testing.espresso_idling_concurrent
+//    androidTestImplementation deps.testing.espresso_idling_resource
 
     //FastLane ScreenGrab
     androidTestImplementation deps.testing.fastlane
