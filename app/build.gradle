@@ -84,8 +84,6 @@ dependencies {
 
 apply from: 'integrationtesting.gradle'
 
-/*
 apply from: 'screenshots.gradle'
 
 apply from: 'coverage.gradle'
-*/
