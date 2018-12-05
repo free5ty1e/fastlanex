@@ -16,10 +16,8 @@ import tools.fastlane.screengrab.locale.LocaleTestRule;
 
 //import android.support.test.rule.ActivityTestRule;
 
-//@RunWith(JUnit4.class)
-//@RunWith(MultiDexTestRunner.class)
+@RunWith(JUnit4.class)
 //@RunWith(AndroidJUnit4.class)
-@RunWith(AndroidJUnit4.class)
 public class NavigationActivityJavaFastlaneTest {
 
     @ClassRule
