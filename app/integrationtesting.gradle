@@ -7,11 +7,9 @@ android {
         testInstrumentationRunnerArguments clearPackageData: 'true'
     }
     // Gradle automatically adds 'android.test.runner' as a dependency.
-/*
     useLibrary 'android.test.runner'
     useLibrary 'android.test.base'
     useLibrary 'android.test.mock'
-*/
 
     //Java 8 feature support
     compileOptions {
@@ -40,38 +38,36 @@ android {
 dependencies {
 
 
-//    androidTestImplementation deps.testing.androidx_core
+    androidTestImplementation deps.testing.androidx_core
 
     // AndroidJUnitRunner and JUnit Rules
-//    androidTestImplementation deps.testing.androidx_runner
-//    androidTestImplementation deps.testing.androidx_rules
+    androidTestImplementation deps.testing.androidx_runner
+    androidTestImplementation deps.testing.androidx_rules
 
     // Assertions
-//    androidTestImplementation deps.testing.androidx_junit
-//    androidTestImplementation deps.testing.androidx_truth
-//    androidTestImplementation deps.testing.google_truth
+    androidTestImplementation deps.testing.androidx_junit
+    androidTestImplementation deps.testing.androidx_truth
+    androidTestImplementation deps.testing.google_truth
 
     // Espresso dependencies
-//    androidTestImplementation deps.testing.espresso_core
-//    androidTestImplementation deps.testing.espresso_contrib
-//    androidTestImplementation deps.testing.espresso_intents
-//    androidTestImplementation deps.testing.espresso_accessibility
-//    androidTestImplementation deps.testing.espresso_web
-//    androidTestImplementation deps.testing.espresso_idling_concurrent
-//    androidTestImplementation deps.testing.espresso_idling_resource
+    androidTestImplementation deps.testing.espresso_core
+    androidTestImplementation deps.testing.espresso_contrib
+    androidTestImplementation deps.testing.espresso_intents
+    androidTestImplementation deps.testing.espresso_accessibility
+    androidTestImplementation deps.testing.espresso_web
+    androidTestImplementation deps.testing.espresso_idling_concurrent
+    androidTestImplementation deps.testing.espresso_idling_resource
 
     //FastLane ScreenGrab
     androidTestImplementation deps.testing.fastlane
 
     //============Unit test partial instrumentation with Robolectric and AndroidX Jetpack / Espresso:
-/*
     testImplementation(deps.testing.androidx_runner)
     testImplementation(deps.testing.androidx_junit)
     testImplementation(deps.testing.espresso_intents)
     testImplementation(deps.testing.espresso_core)
     testImplementation(deps.testing.androidx_truth)
     testImplementation (deps.testing.robolectric)
-*/
 }
 
 
