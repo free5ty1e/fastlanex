@@ -10,3 +10,4 @@
 /captures
 .externalNativeBuild
 report.xml
+fastlane/metadata
