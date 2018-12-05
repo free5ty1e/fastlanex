@@ -1,9 +1,6 @@
 android {
     defaultConfig {
-//                testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunner "com.example.fastlanex.testutils.FastlaneTestRunner"
-//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
+        testInstrumentationRunner "$androidTestRunner"
         testInstrumentationRunnerArguments clearPackageData: 'true'
     }
     // Gradle automatically adds 'android.test.runner' as a dependency.
@@ -35,6 +32,7 @@ android {
         }
     }
 }
+
 dependencies {
 
 
@@ -67,7 +65,7 @@ dependencies {
     testImplementation(deps.testing.espresso_intents)
     testImplementation(deps.testing.espresso_core)
     testImplementation(deps.testing.androidx_truth)
-    testImplementation (deps.testing.robolectric)
+    testImplementation(deps.testing.robolectric)
 }
 
 

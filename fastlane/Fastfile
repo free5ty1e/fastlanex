@@ -17,20 +17,6 @@ default_platform(:android)
 
 platform :android do
   desc "Build required apk and test apk for screengrab command"
-  lane :buildtest do
-    gradle(
-      task: "assembleDebug",
-      print_command: true,
-      flags: "-Dorg.gradle.internal.http.socketTimeout=60000 -Dorg.gradle.internal.http.connectionTimeout=60000"
-    )
-
-    gradle(task: "assembleDebugAndroidTest",
-      print_command: true,
-      flags: "-Dorg.gradle.internal.http.socketTimeout=60000 -Dorg.gradle.internal.http.connectionTimeout=60000"
-    )
-  end
-
-  desc "Build required apk and test apk for screengrab command"
   lane :grabprep do
     gradle(
       task: "assembleDebug assembleDebugAndroidTest",
@@ -45,7 +31,7 @@ platform :android do
     gradle(task: "cAT",
 
       print_command: true,
-      flags: "-Pandroid.testInstrumentationRunnerArguments.size=small -Dorg.gradle.internal.http.socketTimeout=60000 -Dorg.gradle.internal.http.connectionTimeout=60000"
+      flags: "-Pandroid.testInstrumentationRunnerArguments.size=small -PandroidTestRunner=androidx.test.runner.AndroidJUnitRunner --continue --full-stacktrace -Dorg.gradle.internal.http.socketTimeout=60000 -Dorg.gradle.internal.http.connectionTimeout=60000"
     )
   end
 
@@ -53,7 +39,7 @@ platform :android do
   lane :smalltests do
     gradle(task: "createDebugCoverageReport",
       print_command: true,
-      flags: "-Pandroid.testInstrumentationRunnerArguments.size=small -Dorg.gradle.internal.http.socketTimeout=60000 -Dorg.gradle.internal.http.connectionTimeout=60000"
+      flags: "-Pandroid.testInstrumentationRunnerArguments.size=small -PandroidTestRunner=androidx.test.runner.AndroidJUnitRunner --continue --full-stacktrace -Dorg.gradle.internal.http.socketTimeout=60000 -Dorg.gradle.internal.http.connectionTimeout=60000"
     )
   end
 

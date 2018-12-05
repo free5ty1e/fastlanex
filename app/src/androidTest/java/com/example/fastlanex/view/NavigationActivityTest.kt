@@ -1,22 +1,20 @@
 package com.example.fastlanex.view
 
-import android.support.test.espresso.Espresso
-import android.support.test.espresso.action.ViewActions
-import android.support.test.espresso.assertion.ViewAssertions
-import android.support.test.espresso.matcher.ViewMatchers
-import android.support.test.filters.SmallTest
-import android.support.test.rule.ActivityTestRule
-import android.support.test.runner.AndroidJUnit4
-import android.support.v7.view.menu.ActionMenuItem
+import androidx.appcompat.view.menu.ActionMenuItem
+import androidx.test.espresso.Espresso
+import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.filters.SmallTest
+import androidx.test.rule.ActivityTestRule
 import com.example.fastlanex.R
 import com.example.fastlanex.view.activities.NavigationActivity
 import org.hamcrest.Matchers
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 
 @SmallTest
-@RunWith(AndroidJUnit4::class)
+//@RunWith(AndroidJUnit4::class)
 class NavigationActivityTest {
 
     @get:Rule val activityTestRule: ActivityTestRule<NavigationActivity> = ActivityTestRule<NavigationActivity>(NavigationActivity::class.java)
