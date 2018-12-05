@@ -12,6 +12,6 @@ locales(['en-US'])
 # clear all previously generated screenshots in your local output directory before creating new ones
 clear_previous_screenshots(true)
 
-test_instrumentation_runner 'androidx.test.runner.AndroidJUnitRunner'
+test_instrumentation_runner 'com.example.fastlanex.testutils.FastlaneTestRunner'
 
 exit_on_test_failure(false)

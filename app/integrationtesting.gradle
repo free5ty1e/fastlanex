@@ -1,7 +1,7 @@
 android {
     defaultConfig {
         //        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.example.fastlanex.testutils.FastlaneTestRunner"
         testInstrumentationRunnerArguments clearPackageData: 'true'
     }
     // Gradle automatically adds 'android.test.runner' as a dependency.
