@@ -33,7 +33,9 @@ platform :android do
 
   desc "Runs all the tests with coverage"
   lane :alltests do
-    gradle(task: "jacocoCoverage",
+#    gradle(task: "jacocoCoverage",
+    gradle(task: "cAT",
+
       print_command: true,
       flags: "-Dorg.gradle.internal.http.socketTimeout=60000 -Dorg.gradle.internal.http.connectionTimeout=60000"
     )
