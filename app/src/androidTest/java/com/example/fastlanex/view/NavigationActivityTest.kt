@@ -15,7 +15,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-
+@SmallTest
 @RunWith(AndroidJUnit4::class)
 class NavigationActivityTest {
 
@@ -47,7 +47,6 @@ class NavigationActivityTest {
 */
 
     @Test
-    @SmallTest
     fun navigateToUnknownItemTest() {
         //First navigate to home
         clickTabHome()
@@ -62,7 +61,6 @@ class NavigationActivityTest {
 
 
     @Test
-    @SmallTest
     fun mainActivityTest() {
 //        screenshot("start mainActivityTest")
         checkHomeScreen()
