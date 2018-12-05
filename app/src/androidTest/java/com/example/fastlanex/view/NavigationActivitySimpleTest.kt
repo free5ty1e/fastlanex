@@ -6,15 +6,20 @@ import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.filters.SmallTest
+import androidx.test.rule.ActivityTestRule
 import com.example.fastlanex.R
-import com.example.fastlanex.screenshot.BaseUiScreenshotTest
 import com.example.fastlanex.view.activities.NavigationActivity
 import org.hamcrest.Matchers
+import org.junit.Rule
 import org.junit.Test
 
 @SmallTest
-class NavigationActivityTest : BaseUiScreenshotTest<NavigationActivity>(NavigationActivity::class.java) {
+//@RunWith(AndroidJUnit4::class)
+class NavigationActivitySimpleTest {
 
+    @get:Rule val activityTestRule: ActivityTestRule<NavigationActivity> = ActivityTestRule<NavigationActivity>(NavigationActivity::class.java)
+
+    private fun getActivity(): NavigationActivity = activityTestRule.activity
 //    var scenario: ActivityScenario<NavigationActivity>? = null
 
 /*
@@ -47,7 +52,7 @@ class NavigationActivityTest : BaseUiScreenshotTest<NavigationActivity>(Navigati
         val it = getActivity()
 //        scenario!!.onActivity {
         it.
-                mOnNavigationItemSelectedListener.onNavigationItemSelected(ActionMenuItem(it, 0, 0, 0, 0, "TEST"))
+            mOnNavigationItemSelectedListener.onNavigationItemSelected(ActionMenuItem(it, 0, 0, 0, 0, "TEST"))
 //        }
         checkHomeScreen()
     }
@@ -55,6 +60,7 @@ class NavigationActivityTest : BaseUiScreenshotTest<NavigationActivity>(Navigati
 
     @Test
     fun mainActivityTest() {
+//        screenshot("start mainActivityTest")
         checkHomeScreen()
 
         clickTabHome()
