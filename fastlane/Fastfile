@@ -15,13 +15,51 @@ update_fastlane
 
 default_platform(:android)
 
+$gradleTimeoutOptions = "-Dorg.gradle.internal.http.socketTimeout=60000 -Dorg.gradle.internal.http.connectionTimeout=60000 "
+$gradleIntTestSizeOption = "-Pandroid.testInstrumentationRunnerArguments.size=small "
+$gradleTestRunnerOption = "-PandroidTestRunner=androidx.test.runner.AndroidJUnitRunner "
+$gradleOtherTestOptions = "--continue --full-stacktrace "
+
 platform :android do
+  desc "Build required apk and test apk for screengrab command"
+  lane :gradletasks do
+    gradle(
+      task: "tasks",
+      print_command: true,
+      flags: $gradleTimeoutOptions
+    )
+  end
+
+  lane :assemblerelease do
+    gradle(
+      task: "assemblerelease",
+      print_command: true,
+      flags: $gradleTimeoutOptions
+    )
+  end
+
+  lane :lintscan do
+    gradle(
+      task: "lint",
+      print_command: true,
+      flags: $gradleTimeoutOptions
+    )
+  end
+
+  lane :unittests do
+    gradle(
+      task: "test",
+      print_command: true,
+      flags: $gradleTimeoutOptions
+    )
+  end
+
   desc "Build required apk and test apk for screengrab command"
   lane :grabprep do
     gradle(
       task: "assembleDebug assembleDebugAndroidTest",
       print_command: true,
-      flags: "-Dorg.gradle.internal.http.socketTimeout=60000 -Dorg.gradle.internal.http.connectionTimeout=60000"
+      flags: $gradleTimeoutOptions
     )
   end
 
@@ -30,30 +68,36 @@ platform :android do
 #    gradle(task: "jacocoCoverage",
     gradle(task: "cAT",
       print_command: true,
-      flags: "-Pandroid.testInstrumentationRunnerArguments.size=small -PandroidTestRunner=androidx.test.runner.AndroidJUnitRunner --continue --full-stacktrace -Dorg.gradle.internal.http.socketTimeout=60000 -Dorg.gradle.internal.http.connectionTimeout=60000"
+      flags: $gradleIntTestSizeOption + $gradleTestRunnerOption + $gradleOtherTestOptions + $gradleTimeoutOptions
     )
   end
 
   desc "Runs Small QA flavor tests with coverage"
   lane :smalltests do
-    gradle(task: "test createDebugCoverageReport",
+    gradle(task: "createDebugCoverageReport",
       print_command: true,
-      flags: "-Pandroid.testInstrumentationRunnerArguments.size=small -PandroidTestRunner=androidx.test.runner.AndroidJUnitRunner --continue --full-stacktrace -Dorg.gradle.internal.http.socketTimeout=60000 -Dorg.gradle.internal.http.connectionTimeout=60000"
+      flags: $gradleIntTestSizeOption + $gradleTestRunnerOption + $gradleOtherTestOptions + $gradleTimeoutOptions
     )
   end
 
   desc "Submit a new Beta Build to Crashlytics Beta"
   lane :beta do
-    gradle(task: "clean assembleRelease")
+    gradle(task: "clean assembleRelease",
+      print_command: true,
+      flags: $gradleTimeoutOptions
+      )
     crashlytics
-  
+
     # sh "your_script.sh"
     # You can also use other beta testing services here
   end
 
   desc "Deploy a new version to the Google Play"
   lane :deploy do
-    gradle(task: "clean assembleRelease")
+    gradle(task: "clean assembleRelease",
+      print_command: true,
+      flags: $gradleTimeoutOptions
+      )
     upload_to_play_store
   end
 end

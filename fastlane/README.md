@@ -16,6 +16,26 @@ or alternatively using `brew cask install fastlane`
 
 # Available Actions
 ## Android
+### android gradletasks
+```
+fastlane android gradletasks
+```
+Build required apk and test apk for screengrab command
+### android assemblerelease
+```
+fastlane android assemblerelease
+```
+
+### android lintscan
+```
+fastlane android lintscan
+```
+
+### android unittests
+```
+fastlane android unittests
+```
+
 ### android grabprep
 ```
 fastlane android grabprep
