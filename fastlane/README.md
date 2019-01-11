@@ -36,11 +36,31 @@ fastlane android lintscan
 fastlane android unittests
 ```
 
+### android switchtofastlanetestrunner
+```
+fastlane android switchtofastlanetestrunner
+```
+Switch to the FastlaneTestRunner
+### android switchtoandroidxtestrunner
+```
+fastlane android switchtoandroidxtestrunner
+```
+Switch to the AndroidXTestRunner
 ### android grabprep
 ```
 fastlane android grabprep
 ```
 Build required apk and test apk for screengrab command
+### android prepandgrabscreenshots
+```
+fastlane android prepandgrabscreenshots
+```
+Prepare for and grab screenshots using fastlane screengrab
+### android screens
+```
+fastlane android screens
+```
+Prepare for and grab screenshots using fastlane screengrab
 ### android alltests
 ```
 fastlane android alltests

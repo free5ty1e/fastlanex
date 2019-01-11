@@ -1,4 +1,4 @@
-package com.example.fastlanex.testutils
+package com.example.fastlanex.testutilities
 
 import android.os.Bundle
 import android.support.multidex.MultiDex

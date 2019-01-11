@@ -54,13 +54,38 @@ platform :android do
     )
   end
 
+  desc "Switch to the FastlaneTestRunner"
+  lane :switchtofastlanetestrunner do
+    sh "sed -i '' '/androidTestRunner/s/.*/androidTestRunner=com.example.fastlanex.testutilities.FastlaneTestRunner/' ../gradle.properties"
+    sh "sed -i '' '/@Ignore/s/^/\\/\\//g' ../app/src/androidTest/java/com/example/fastlanex/view/fastlane/*"
+  end
+
+  desc "Switch to the AndroidXTestRunner"
+  lane :switchtoandroidxtestrunner do
+    sh "sed -i '' '/androidTestRunner/s/.*/androidTestRunner=androidx.test.runner.AndroidJUnitRunner/' ../gradle.properties"
+    sh "sed -i '' '/@Ignore/s/^\\/\\/*//g' ../app/src/androidTest/java/com/example/fastlanex/view/fastlane/*"
+  end
+
   desc "Build required apk and test apk for screengrab command"
   lane :grabprep do
+    switchtofastlanetestrunner
     gradle(
       task: "assembleDebug assembleDebugAndroidTest",
       print_command: true,
       flags: $gradleTimeoutOptions
     )
+    switchtoandroidxtestrunner
+  end
+
+  desc "Prepare for and grab screenshots using fastlane screengrab"
+  lane :prepandgrabscreenshots do
+    grabprep
+    screengrab
+  end
+
+  desc "Prepare for and grab screenshots using fastlane screengrab"
+  lane :screens do
+    prepandgrabscreenshots
   end
 
   desc "Runs all the tests with coverage"

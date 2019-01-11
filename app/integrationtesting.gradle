@@ -24,9 +24,7 @@ android {
         installOptions '-r', '-d', '-t' //'-g'
     }
     testOptions {
-        // temporarily disable the orchestrator as this breaks coverage: https://issuetracker.google.com/issues/72758547
-        //execution 'ANDROID_TEST_ORCHESTRATOR'
-
+        execution 'ANDROIDX_TEST_ORCHESTRATOR'
         unitTests {
             includeAndroidResources = true
         }
@@ -41,6 +39,9 @@ dependencies {
     // AndroidJUnitRunner and JUnit Rules
     androidTestImplementation deps.testing.androidx_runner
     androidTestImplementation deps.testing.androidx_rules
+
+    // Android Test Orchestrator
+    androidTestUtil deps.testing.android_test_orchestrator
 
     // Assertions
     androidTestImplementation deps.testing.androidx_junit

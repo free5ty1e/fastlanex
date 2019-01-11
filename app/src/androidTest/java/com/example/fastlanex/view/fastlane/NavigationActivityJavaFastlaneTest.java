@@ -10,17 +10,16 @@ import android.support.test.runner.AndroidJUnit4;
 import com.example.fastlanex.R;
 import com.example.fastlanex.view.activities.NavigationActivity;
 import org.hamcrest.Matchers;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import tools.fastlane.screengrab.Screengrab;
 import tools.fastlane.screengrab.UiAutomatorScreenshotStrategy;
 import tools.fastlane.screengrab.locale.LocaleTestRule;
 
+@Ignore(NavigationActivityJavaFastlaneTest.IGNORE_REASON)
 @RunWith(AndroidJUnit4.class)
 public class NavigationActivityJavaFastlaneTest {
+    static final String IGNORE_REASON = "This test is only intended for running via fastlane screengrab, where the test runner is manually managed";
 
     @ClassRule
     public static final LocaleTestRule localeTestRule = new LocaleTestRule();

@@ -71,6 +71,7 @@ deps.room = room
 def testing = [:]
 testing.androidx_core = "androidx.test:core:$versions.androidx_test"
 testing.androidx_runner = "androidx.test:runner:$versions.androidx_test_runner"
+testing.android_test_orchestrator = "androidx.test:orchestrator:$versions.androidx_test_runner"
 testing.androidx_rules = "androidx.test:rules:$versions.androidx_test_runner"
 
 testing.androidx_junit = "androidx.test.ext:junit:$versions.androidx_test"
