@@ -35,7 +35,7 @@ class NavigationActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.navigation_settings -> {
-                    showFragment(SettingsFragment.newInstance(userId!!), R.string.title_settings)
+                    showFragment(SettingsFragment.newInstance("USER"), R.string.title_settings)
                     return@OnNavigationItemSelectedListener true
                 }
             }
